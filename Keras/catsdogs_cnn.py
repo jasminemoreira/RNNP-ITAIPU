@@ -23,7 +23,7 @@ from keras.preprocessing import image
 base_dir = r"C:\Users\jasmi\OneDrive\Área de Trabalho\RNNP\Keras"
 
 train_datagen = ImageDataGenerator(rescale=1./255)
-test_datagen = ImageDataGenerator(rescale=1./255)
+validation_datagen = ImageDataGenerator(rescale=1./255)
 
 train_generator = train_datagen.flow_from_directory(
         os.path.join(base_dir,"catdog_train"),
@@ -32,8 +32,8 @@ train_generator = train_datagen.flow_from_directory(
         class_mode="binary"
         )
 
-validation_generator = test_datagen.flow_from_directory(
-        os.path.join(base_dir,"catdog_test"),
+validation_generator = validation_datagen.flow_from_directory(
+        os.path.join(base_dir,"catdog_validation"),
         target_size=(150,150),
         batch_size=20,
         class_mode="binary"
@@ -66,8 +66,8 @@ history = model.fit_generator(
         )
 
 # avaliar resultado do treinamento
-acc = history.history['acc']
-val_acc = history.history['val_acc']
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
 loss = history.history['loss']
 val_loss = history.history['val_loss']
 
@@ -105,3 +105,31 @@ x = np.expand_dims(x, axis=0)
 images = np.vstack([x])
 classes = model.predict_classes(images)
 print(classes)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
