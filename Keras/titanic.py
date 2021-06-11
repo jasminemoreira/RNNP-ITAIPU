@@ -2,7 +2,7 @@
 """
 Created on Fri Jun 11 14:18:20 2021
 
-@author: jasmi
+@author: Jasmmine Moreira
 """
 import pandas as pd
 import tensorflow as tf
