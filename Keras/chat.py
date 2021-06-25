@@ -4,6 +4,7 @@ Created on Fri Jun 25 11:44:32 2021
 
 @author: Jasmine Moreira
 """
+
 import pandas as pd
 import numpy as np
 
@@ -33,12 +34,20 @@ model.add(Flatten())
 model.add(Dense(adf.answer_id.max()+1, activation = 'softmax'))
 
 model.compile(optimizer='rmsprop', loss='binary_crossentropy',metrics=['acc'])
-
 model.summary()
 
 history = model.fit(x_train, y_train, epochs=1000, batch_size=22, validation_split=0.2)
  
 prediction = model(x_train)
 print(prediction)
-
 np.argmax(prediction, axis=1) 
+
+while(True):
+    sentence = input("Você: ")
+    sentence = tokenizer.texts_to_sequences(sentence)
+    sentence = pad_sequences(sentence, maxlen=max_len)
+    prediction = model(sentence)
+    category = np.argmax(prediction, axis=1)[0]
+    answer = adf.query('answer_id=='+str(category)).to_numpy()
+    print("Janaína:"+answer[0][1])
+
