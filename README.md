@@ -14,7 +14,7 @@ https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009
 https://www.kaggle.com/primaryobjects/voicegender
 
 
-EVIDÊNCIAS PARA ENTREGA:
+EVIDÊNCIAS PARA ENTREGA ATÉ O DIA 05/07/2021:
 
 - Evidência 01 - mnist_vanilla
 - Evidência 02 – mnist_vanilla_cnn
