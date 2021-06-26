@@ -2,11 +2,11 @@
 """
 Created on Fri Jun 25 11:44:32 2021
 
-@author: Jasmine
+@author: Jasmine Moreira
 
 python -m pip install pyspellchecker
+pip install SpeechRecognition
 """
-
 import pandas as pd
 import numpy as np
 from spellchecker import SpellChecker
@@ -16,6 +16,12 @@ from tensorflow.keras.layers import Flatten, Dense, Embedding, Dropout
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+#############################################################################################
+#
+# PREPARAÇÃO E TREINAMENTO DO MODELO
+#
+#############################################################################################
 
 sp = SpellChecker(language="pt")
 
@@ -65,12 +71,50 @@ prediction = model(x_train)
 print(prediction)
 np.argmax(prediction, axis=1) 
 
+
+#############################################################################################
+#
+# CAPTURA E RECONHECIMENTO DE VOZ E RESPOSTA
+#
+#############################################################################################
+
+import speech_recognition as sr
+import win32com.client as wincl
+speak = wincl.Dispatch("SAPI.SpVoice")
+speak.Rate=3
+
+#Para MacOS
+# import os
+# os.system('say "'+answer+'"')
+
+
+def recognize_speech_from_mic(recognizer, microphone):
+    transcription = ""
+    with microphone as source:
+        audio = recognizer.listen(source)
+        try:
+            transcription = recognizer.recognize_google(audio, language="pt-BR")
+        except sr.RequestError:
+            print("API unavailable")
+        except sr.UnknownValueError:
+            pass
+    return transcription  
+
+recognizer = sr.Recognizer()
+microphone = sr.Microphone()
+
+with microphone as source:
+    recognizer.adjust_for_ambient_noise(source)
+
+speak.Speak("Olá, sou a Janaína, vamos começar?")
 while(True):
-    sentence = input("Você: ")
+    sentence = recognize_speech_from_mic(recognizer, microphone)
+    if(sentence==""): continue
+    print("Você: "+sentence)
     sentence = tokenizer.texts_to_sequences(spck([sentence]))
     sentence = pad_sequences(sentence, maxlen=max_len)
     prediction = model(sentence)
     category = np.argmax(prediction, axis=1)[0]
     answer = adf.query('answer_id=='+str(category)).to_numpy()
-    print(answer[0][1])
-
+    print("Janaína: "+answer[0][1])
+    speak.Speak(answer[0][1])
