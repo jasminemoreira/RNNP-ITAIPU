@@ -2,10 +2,14 @@
 """
 Created on Fri Jun 25 11:44:32 2021
 
-@author: Jasmine Moreira
+@author: Jasmine
+
+python -m pip install pyspellchecker
 """
+
 import pandas as pd
 import numpy as np
+from spellchecker import SpellChecker
 from tensorflow.keras import optimizers
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Flatten, Dense, Embedding, Dropout
@@ -13,12 +17,24 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
+sp = SpellChecker(language="pt")
+
 #Carregar perguntas e resspostas
 qdf = pd.read_csv (r'C:\Users\jasmi\OneDrive\Área de Trabalho\RNNP\Keras\ChatBot\questions.csv',sep=";")
 adf = pd.read_csv (r'C:\Users\jasmi\OneDrive\Área de Trabalho\RNNP\Keras\ChatBot\answers.csv',sep=";")
 
-#Converter perguntas para minúsculas
-qdf.question = [question.lower() for question in qdf.question]
+#Verificar ortografia e colocar em minúsculas
+def spck(sentences):
+    checked_q = []
+    for sentence in sentences:
+        q = ""
+        for word in sentence.lower().split():
+          q = q+" "+sp.correction(word)
+        checked_q.append(q)
+    return checked_q
+
+#Converter perguntas para minúsculas    
+qdf.question = spck(qdf.question)
 
 max_len = 15
 max_words = 1000
@@ -42,12 +58,8 @@ model.add(Dense(adf.answer_id.max()+1, activation = 'softmax'))
 
 opt = optimizers.Adam(learning_rate=0.0001)
 model.compile(optimizer=opt, loss='binary_crossentropy',metrics=['acc'])
-model.summary()
 
-history = model.fit(x_train, y_train,
-                    epochs=1000, 
-                    batch_size=len(x_train)
-                    )
+history = model.fit(x_train, y_train, epochs=2000, batch_size=len(x_train))
  
 prediction = model(x_train)
 print(prediction)
@@ -55,7 +67,7 @@ np.argmax(prediction, axis=1)
 
 while(True):
     sentence = input("Você: ")
-    sentence = tokenizer.texts_to_sequences([sentence.lower()])
+    sentence = tokenizer.texts_to_sequences(spck([sentence]))
     sentence = pad_sequences(sentence, maxlen=max_len)
     prediction = model(sentence)
     category = np.argmax(prediction, axis=1)[0]
