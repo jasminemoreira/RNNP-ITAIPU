@@ -42,7 +42,7 @@ def spck(sentences):
 #Converter perguntas para minúsculas    
 qdf.question = spck(qdf.question)
 
-max_len = 15
+max_len = 50
 max_words = 1000
 
 #Tokenizar e codificar as perguntas
@@ -67,9 +67,9 @@ model.compile(optimizer=opt, loss='binary_crossentropy',metrics=['acc'])
 
 history = model.fit(x_train, y_train, epochs=2000, batch_size=len(x_train))
  
-prediction = model(x_train)
-print(prediction)
-np.argmax(prediction, axis=1) 
+#prediction = model(x_train)
+#print(prediction)
+#np.argmax(prediction, axis=1) 
 
 
 #############################################################################################
@@ -83,10 +83,9 @@ import win32com.client as wincl
 speak = wincl.Dispatch("SAPI.SpVoice")
 speak.Rate=3
 
-#Para MacOS
+#Para MacOS e Linux
 # import os
 # os.system('say "'+answer+'"')
-
 
 def recognize_speech_from_mic(recognizer, microphone):
     transcription = ""
