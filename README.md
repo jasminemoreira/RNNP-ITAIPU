@@ -16,15 +16,15 @@ https://www.kaggle.com/primaryobjects/voicegender
 
 EVIDÊNCIAS PARA ENTREGA:
 
- Evidência 01 - mnist_vanilla
- Evidência 02 – mnist_vanilla_cnn
- Evidência 03 – CatDog
- Evidência 04 – Titanic
- Evidência 05 – Heart
- Evidência 06 – Wine Quality
- Evidência 07 – Gender Voice
- Evidência 08 – Orange - Titanic
- Evidência 09 – Orange - Heart
- Evidência 10 – Orange - Wine Quality
- Evidência 11 – Orange - Gender Voice
- Evidência 12 – ChatBot
+- Evidência 01 - mnist_vanilla
+- Evidência 02 – mnist_vanilla_cnn
+- Evidência 03 – CatDog
+- Evidência 04 – Titanic
+- Evidência 05 – Heart
+- Evidência 06 – Wine Quality
+- Evidência 07 – Gender Voice
+- Evidência 08 – Orange - Titanic
+- Evidência 09 – Orange - Heart
+- Evidência 10 – Orange - Wine Quality
+- Evidência 11 – Orange - Gender Voice
+- Evidência 12 – ChatBot
